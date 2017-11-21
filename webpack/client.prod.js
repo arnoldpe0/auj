@@ -8,7 +8,11 @@ module.exports = {
   name: 'client',
   target: 'web',
   devtool: 'source-map',
-  entry: ['babel-polyfill', path.resolve(__dirname, '../src/index.js')],
+  entry: [
+    'babel-polyfill',
+    'fetch-everywhere',
+    path.resolve(__dirname, '../src/index.js')
+  ],
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
@@ -77,10 +81,11 @@ module.exports = {
           'react-dom',
           'react-redux',
           'redux',
-          'history/createBrowserHistory',
+          'rudy-history/createBrowserHistory',
           'transition-group',
           'redux-first-router',
           'redux-first-router-link',
+          'fetch-everywhere',
           'babel-polyfill',
           'redux-devtools-extension/logOnlyInProduction'
         ]
