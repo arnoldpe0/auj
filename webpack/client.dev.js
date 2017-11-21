@@ -11,7 +11,6 @@ module.exports = {
   devtool: 'eval',
   entry: [
     'babel-polyfill',
-    'fetch-everywhere',
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
     'react-hot-loader/patch',
     path.resolve(__dirname, '../src/index.js')
@@ -71,11 +70,10 @@ module.exports = {
           'react-dom',
           'react-redux',
           'redux',
-          'rudy-history/createBrowserHistory',
+          'history/createBrowserHistory',
           'transition-group',
           'redux-first-router',
           'redux-first-router-link',
-          'fetch-everywhere',
           'babel-polyfill',
           'redux-devtools-extension/logOnlyInProduction'
         ]

@@ -1,69 +1,69 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Link, { NavLink } from 'redux-first-router-link'
-import { goToPage } from '../actions'
+
 import styles from '../css/Sidebar'
 
-const Sidebar = ({ onClick, path }) =>
+const Sidebar = ({ path, dispatch }) => (
   <div className={styles.sidebar}>
     <h2>SEO-FRIENDLY LINKS</h2>
 
-    <NavLink activeClassName={styles.active} exact to='/'>HOME</NavLink>
-
-    <NavLink activeClassName={styles.active} to='/list/db-graphql'>
-      DB & GRAPHQL
-    </NavLink>
-
-    <NavLink activeClassName={styles.active} to={['list', 'react-redux']}>
-      REACT & REDUX
+    <NavLink to='/' exact activeClassName={styles.active}>
+      Home
     </NavLink>
 
     <NavLink
       activeClassName={styles.active}
-      to={{ type: 'LIST', payload: { category: 'fp' } }}
+      to={{ type: 'LIST', payload: { category: 'redux' } }}
     >
-      FP
+      Redux
     </NavLink>
+
+    <Link
+      className={isActive(path, '/list/react')}
+      to={{ type: 'LIST', payload: { category: 'react' } }}
+    >
+      React
+    </Link>
 
     <div style={{ height: 20 }} />
+
     <h2>EVENT HANDLERS</h2>
 
-    <span className={active(path, '/')} onClick={() => onClick('HOME')}>
-      HOME
+    <span
+      role='link'
+      tabIndex='0'
+      className={isActive(path, '/')}
+      onClick={() => dispatch({ type: 'HOME' })}
+    >
+      Home
     </span>
 
     <span
-      className={active(path, '/list/db-graphql')}
-      onClick={() => onClick('LIST', 'db-graphql')}
+      role='link'
+      tabIndex='0'
+      className={isActive(path, '/list/redux')}
+      onClick={() => dispatch({ type: 'LIST', payload: { category: 'redux' } })}
     >
-      DB & GRAPHQL
+      Redux
     </span>
 
     <span
-      className={active(path, '/list/react-redux')}
-      onClick={() => onClick('LIST', 'react-redux')}
+      role='link'
+      tabIndex='0'
+      className={isActive(path, '/list/react')}
+      onClick={() => dispatch({ type: 'LIST', payload: { category: 'react' } })}
     >
-      REACT & REDUX
+      React
     </span>
-
-    <span
-      className={active(path, '/list/fp')}
-      onClick={() => onClick('LIST', 'fp')}
-    >
-      FP
-    </span>
-
-    <div style={{ height: 14 }} />
-
-    <NavLink to={{ type: 'ADMIN' }} activeClassName={styles.active}>
-      ADMIN
-    </NavLink>
   </div>
+)
 
-const active = (currentPath, path) =>
-  currentPath === path ? styles.active : ''
+const isActive = (actualPath, expectedPath) =>
+  actualPath === expectedPath ? styles.active : ''
 
-const mapDispatch = { onClick: goToPage }
-const mapState = ({ location }) => ({ path: location.pathname })
+const mapStateToProps = state => ({
+  path: state.location.pathname
+})
 
-export default connect(mapState, mapDispatch)(Sidebar)
+export default connect(mapStateToProps)(Sidebar)

@@ -1,37 +1,36 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Link from 'redux-first-router-link'
+import ArticlePromotion from './ArticlePromotion'
 
 import styles from '../css/List'
 
-const List = ({ videos }) =>
+const List = ({ category, packages }) => (
   <div className={styles.list}>
-    {videos.map((video, key) => <Row {...video} key={key} />)}
-  </div>
+    <div className={styles.title}>Category: {category}</div>
 
-const Row = ({ slug, title, youtubeId, by, color }) =>
-  <Link
-    className={styles.row}
-    to={`/video/${slug}`}
-    style={{ backgroundImage: youtubeBackground(youtubeId) }}
-  >
-    <div className={styles.avatar} style={{ backgroundColor: color }}>
-      {initials(by)}
+    <div className={styles.content}>
+      <ul>{packages.map(pkg => <li key={pkg}>{pkg}</li>)}</ul>
+
+      {category === 'redux' ? (
+        <ArticlePromotion
+          title='Wanna master data-fetching? Read:'
+          text='Redux-First Router data-fetching: solving the 80% use case for async Middleware 🚀'
+          url='https://medium.com/faceyspacey/redux-first-router-data-fetching-solving-the-80-use-case-for-async-middleware-14529606c262'
+        />
+      ) : (
+        <ArticlePromotion
+          title='New to Rudy?? Learn how it started and its motivation:'
+          text='Pre Release: Redux-First Router — A Step Beyond Redux-Little-Router 🚀'
+          url='https://medium.com/faceyspacey/pre-release-redux-first-router-a-step-beyond-redux-little-router-cd2716576aea'
+        />
+      )}
     </div>
-    <span className={styles.title}>{title}</span>
+  </div>
+)
 
-    <div className={styles.gradient} />
-    <span className={styles.by}>by: {by}</span>
-  </Link>
+const mapStateToProps = state => ({
+  category: state.category,
+  packages: state.packages
+})
 
-const youtubeBackground = youtubeId =>
-  `url(https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg)`
-
-const initials = by => by.split(' ').map(name => name[0]).join('')
-
-const mapState = ({ category, videosByCategory, videosHash }) => {
-  const slugs = videosByCategory[category] || []
-  const videos = slugs.map(slug => videosHash[slug])
-  return { videos }
-}
-export default connect(mapState)(List)
+export default connect(mapStateToProps)(List)
